@@ -32,7 +32,7 @@ public class Square : MonoBehaviour
         NumBlock nb = CurSquare;
         CurSquare = null;
         squares[x, y].CurSquare = nb;
-
+        nb.transform.SetParent(squares[x, y].transform);
         while (time < lerpTime)
         {
             time += Time.deltaTime;
@@ -171,5 +171,64 @@ public class Square : MonoBehaviour
             board.isMoved = true;
 
         yield return StartCoroutine(Move(y, index2));
+    }
+
+    public bool CheckMovable()
+    {
+        if (CurSquare == null) return true;
+       
+        for (int i = index2 + 1; i < squares.GetLength(1);)
+        {
+            if (squares[index1, i].CurSquare)
+            {
+                if (squares[index1, i].CurSquare.Num == CurSquare.Num)
+                {
+                    return true;
+                }
+                break;
+            }
+            else return true;
+        }
+
+        for (int i = index2 - 1; i >= 0;)
+        {
+            if (squares[index1, i].CurSquare)
+            {
+                if (squares[index1, i].CurSquare.Num == CurSquare.Num)
+                {
+                    return true;
+                }
+                break;
+            }
+            else return true;
+        }
+
+        for (int i = index1 - 1; i >= 0;)
+        {
+            if (squares[i, index2].CurSquare)
+            {
+                if (squares[i, index2].CurSquare.Num == CurSquare.Num)
+                {
+                    return true;
+                }
+                break;
+            }
+            else return true;
+        }
+
+        for (int i = index1 + 1; i < squares.GetLength(0);)
+        {
+            if (squares[i, index2].CurSquare)
+            {
+                if (squares[i, index2].CurSquare.Num == CurSquare.Num)
+                {
+                    return true;
+                }
+                break;
+            }
+            else return true;
+        }
+
+        return false;
     }
 }
